@@ -1,0 +1,13 @@
+﻿section {
+    opacity: 0;            
+}
+
+section.current {
+    opacity: 1;
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    right: 25px;    
+}
