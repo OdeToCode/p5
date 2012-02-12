@@ -9,22 +9,48 @@
 	background-image: -ms-linear-gradient(bottom, rgb(153,153,153) 5%, rgb(170,170,153) 13%, rgb(204,204,177) 97%);
 	padding: 10px;
 	font-size: 28px;	
+	font-family: Helvetica, Arial, sans-serif;
+    line-height: normal;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-weight: bold;  
+}
+
+h1 {
+  margin-bottom: 36px;
+  font-size: 38px;
+  line-height: 36px;
+}
+
+ul, ol {
+  margin: 0 0 28px 25px;
+}
+
+ul {
+  list-style: disc;
+}
+
+li {
+  line-height: 36px;  
 }
 
 section {
     opacity: 0;
+    z-index: 0;
     height: 0px;
     overflow: hidden;
-    -webkit-transition: opacity 400ms linear 0s;  
-    -moz-transition: opacity 400ms linear 0s;	
-    -ms-transition: opacity 400ms linear 0s;
-    transition: opacity 400ms linear 0s;     
+    -webkit-transition: opacity 300ms linear 0s;  
+    -moz-transition: opacity 300ms linear 0s;	
+    -ms-transition: opacity 300ms linear 0s;
+    transition: opacity 300ms linear 0s;     
 }
 
 section.current {
+    z-index: 10;
     opacity: 1;
     height: auto;
-    overflow: auto;
+    overflow:auto;
 }
 
 section.center {    
@@ -54,6 +80,14 @@ footer {
     background-color: #660000;
     color: white;
     padding: 3px 15px 3px 15px;
+}
+
+#htmllogo {
+    position:absolute;
+    top: 0px;left: 0;
+    padding: 5px;
+    height:95%; 
+    width:95% 
 }
 
 #warning {
@@ -89,5 +123,5 @@ footer {
        font-size: 28px;
        text-align: center;
    }
-    
+   
 }
