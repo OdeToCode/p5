@@ -11,7 +11,6 @@
 	font-size: 28px;	
 }
 
-
 section {
     opacity: 0;
     height: 0px;
@@ -50,6 +49,23 @@ section > h1 {
 footer {
     position: fixed;
     bottom: 0px;
-    right: 25px;
+    right: 0px;
     font-size: 12px;
+    background-color: #660000;
+    color: white;
+    padding: 3px 15px 3px 15px;
+}
+
+#warning {
+    display: none;
+}
+
+.no-flexbox #warning, 
+.no-opacity #warning, 
+.no-csstransitions #warning {
+    display: block;
+    color: red;
+    font-size: smaller;
+    position: fixed;
+    bottom: 0px;
 }

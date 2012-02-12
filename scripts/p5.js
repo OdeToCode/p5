@@ -65,4 +65,6 @@
 
 } ();
 
-p5.start();
+$(function() {
+    p5.start();
+});
