@@ -2,21 +2,64 @@
     "use strict";
 
     var start = function () {
+        assignSlideIdentifiers();
         setFirstVisibleSlide();
-        $(window).bind("keydown", keyDown);
+
+        $(window).bind("keydown", onKeyDown)
+                 .bind("hashchange", hashChange);
+
+    };
+
+    var hashChange = function () {
+        moveTo(window.location.hash.slice(1));
+    };
+
+    var assignSlideIdentifiers = function () {
+        $("section").each(function (index) {
+            var slide = $(this);
+            slide.data("id", index);
+        });
     };
 
     var setFirstVisibleSlide = function () {
-        $("section").first().addClass("current");
+        if (window.location.hash) {
+            moveTo(window.location.hash.slice(1));
+        }
+        else {
+            $("section").first().addClass("current");
+            updateHistory();
+        }
     };
 
-    var keyDown = function (event) {
+    var moveTo = function (id) {
+        $("section.current").removeClass("current");
+        $("section").filter(function () {
+            return $(this).data("id") == id;
+        }).addClass("current");
+    };
+
+    var updateHistory = function () {
+        var id = $("section.current").data("id");
+        window.history.pushState(
+            { "id": id }, id, "#" + id
+        );
+    };
+
+    var onKeyDown = function (event) {
 
         var handler = keys[event.keyCode];
         if (handler) {
             event.preventDefault();
             handler.action();
+            updateHistory();
         }
+    };        
+
+    var moveTo = function (id) {
+        $("section.current").removeClass("current");
+        $("section").filter(function () {
+            return $(this).data("id") == id;
+        }).addClass("current");
     };
 
     var moveForward = function () {
