@@ -21,7 +21,7 @@
 
     var moveForward = function () {
         var current = $("section.current");
-        var next = current.next();
+        var next = current.next("section");
         if (next.length) {
             current.removeClass("current");
             next.addClass("current");
@@ -30,7 +30,7 @@
 
     var moveBackward = function () {
         var current = $("section.current");
-        var prev = current.prev();
+        var prev = current.prev("section");
         if (prev.length) {
             current.removeClass("current");
             prev.addClass("current");
