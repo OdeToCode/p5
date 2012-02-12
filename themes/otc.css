@@ -69,3 +69,25 @@ footer {
     position: fixed;
     bottom: 0px;
 }
+
+@media print{
+   
+   @page {
+       size: landscape;
+   }
+   
+   section {
+       opacity: 1;
+       height: auto;
+       overflow: auto;
+       page-break-after: always;
+       page-break-inside: avoid;
+   }
+       
+   footer {
+       position: static;
+       font-size: 28px;
+       text-align: center;
+   }
+    
+}
