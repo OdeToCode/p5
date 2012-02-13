@@ -1,3 +1,11 @@
-﻿.oneByOne > * {
+﻿.onebyone {
     opacity: 0;
+    
+}
+
+.transitionable {
+    -webkit-transition: all 500ms linear 0s;  
+    -moz-transition: all 500ms linear 0s;	
+    -ms-transition: all 500ms linear 0s;
+    transition: all 500ms linear 0s;     
 }

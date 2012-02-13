@@ -22,7 +22,7 @@
 
     var setFirstVisibleSlide = function () {
         if (window.location.hash) {
-            setCurrentSlide(slideById(window.location.hash.slice(1))); 
+            setCurrentSlide(slideById(window.location.hash.slice(1)));
         }
         else {
             setCurrentSlide(slides().first());
@@ -50,27 +50,63 @@
     };
 
     var moveForward = function () {
+        if (stepAnimation()) {
+            return;
+        }
         setCurrentSlide(nextSlide());
     };
 
+    var moveTo = function (id) {
+        killAnimation();
+        setCurrentSlide(slideById(id));
+    };
+
     var moveBackward = function () {
+        killAnimation();
         setCurrentSlide(previousSlide());
     };
 
     var moveFirst = function () {
+        killAnimation();
         setCurrentSlide(slides().first());
     };
 
     var moveLast = function () {
+        killAnimation();
         setCurrentSlide(slides().last());
     };
-               
+
     var setCurrentSlide = function (slide) {
         if (slide.length > 0) {
             slides().removeClass("current");
             slide.addClass("current");
             updateHistory(slide);
+            startAnimations(slide);
         }
+    };
+
+    var startAnimations = function (slide) {
+        var target = $("[data-animation]", slide).first();
+        var animationName = target.data("animation");
+        if (animationName) {
+            currentAnimation = animations[animationName](target);
+            $.when(currentAnimation.promise).done(function () {
+                currentAnimation = null;
+            });
+        }
+    };
+
+    var stepAnimation = function () {
+        if (currentAnimation) {
+            return currentAnimation.step();
+        }
+    };
+
+    var killAnimation = function () {
+        if (currentAnimation) {
+            currentAnimation.cancel();
+        }
+        return true;
     };
 
     var slides = function () {
@@ -103,7 +139,8 @@
         35: { name: "end", action: moveLast }
     };
 
-    var animations;
+    var animations = {};
+    var currentAnimation = null;
 
     return {
         start: start,
