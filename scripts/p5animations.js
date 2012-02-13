@@ -25,22 +25,42 @@
     
 };
 
-p5.registerAnimations({
-    "onebyone": onebyone
-});
+var timedAppear = function () {
 
-// todo: remove after explaining what not to do
-//var Animation = function (stepFunction) {
-//    var deferred = $.Deferred();
-//    this.step = function () {
-//        if (!stepFunction()) {
-//            deferred.resolve();
-//            return false;
-//        }
-//        return true;
-//    };
-//    this.promise = deferred.promise();
-//    this.cancel = function () {
-//        deferred.resolve();
-//    };
-//};
+    var target = null;
+    var timeoutHandle = null;
+
+    var initialize = function (element) {
+        target = element;
+        target.hide();
+
+        var delay = target.data("animation-delay");
+        timeoutHandle = setTimeout(fadeIn, delay);
+    };
+
+    var step = function () {
+        return timeoutHandle != null;
+    };
+
+    var cancel = function () {
+        if (timeoutHandle) {
+            clearTimeout(timeoutHandle);
+        }
+    };
+
+    var fadeIn = function () {
+        target.fadeIn();
+        timeoutHandle = null;
+    };
+
+    return {
+        initialize: initialize,
+        step: step,
+        cancel: cancel
+    };
+};
+
+p5.registerAnimations({
+    "onebyone": onebyone,
+    "timedAppear" : timedAppear
+});
