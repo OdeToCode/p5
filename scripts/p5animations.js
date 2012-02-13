@@ -1,4 +1,4 @@
-﻿var onebyone = (function () {
+﻿var onebyone = function () {
 
     var target = null;
 
@@ -23,7 +23,7 @@
         cancel: cancel
     };
     
-})();
+};
 
 p5.registerAnimations({
     "onebyone": onebyone

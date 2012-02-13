@@ -9,13 +9,14 @@
                  .bind("hashchange", hashChange);
     };
 
-    var stop = function() {
+    var stop = function () {
+        killAnimations();
         $(window).unbind("keydown", onKeyDown)
                  .unbind("hashchange", hashChange);
     };
 
     var registerAnimations = function (newAnimations) {
-        $.extend(animations, newAnimations);
+        $.extend(registeredAnimations, newAnimations);
     };
 
     var assignSlideIdentifiers = function () {
@@ -28,8 +29,7 @@
     var setFirstVisibleSlide = function () {
         if (window.location.hash) {
             setCurrentSlide(slideById(window.location.hash.slice(1)));
-        }
-        else {
+        } else {
             setCurrentSlide(slides().first());
         }
     };
@@ -62,22 +62,22 @@
     };
 
     var moveTo = function (id) {
-        killAnimation();
+        killAnimations();
         setCurrentSlide(slideById(id));
     };
 
     var moveBackward = function () {
-        killAnimation();
+        killAnimations();
         setCurrentSlide(previousSlide());
     };
 
     var moveFirst = function () {
-        killAnimation();
+        killAnimations();
         setCurrentSlide(slides().first());
     };
 
     var moveLast = function () {
-        killAnimation();
+        killAnimations();
         setCurrentSlide(slides().last());
     };
 
@@ -91,24 +91,56 @@
     };
 
     var startAnimations = function (slide) {
-        var target = $("[data-animation]", slide).first();
-        var animationName = target.data("animation");
-        if (animationName) {
-            currentAnimation = animations[animationName](target);
+        $("[data-animation]", slide).add(slide).each(function () {
+            var animation = extractAnimation($(this));
+            if (animation) {
+                animation.initialize($(this));
+                currentAnimations.push(animation);
+            }
+        });
+    };
+
+    var extractAnimation = function (element) {
+        var name = element.data("animation");
+        if (name) {
+            var factory = registeredAnimations[name];
+            if (factory) {
+                return factory();
+            }
         }
+        return null;
     };
 
     var stepAnimation = function () {
-        if (currentAnimation && currentAnimation()) {
-            return true;
+        var stepped = false;
+        if (currentAnimations.length > 0) {
+            stepped = runStep();
+        }
+        return stepped;
+    };
+
+    var runStep = function () {
+        var animation = currentAnimations[0];
+        if (animation) {
+            var more = animation.step();
+            if (!more) {
+                if (animation.cancel) {
+                    animation.cancel();
+                }
+                currentAnimations.pop();
+            }
+            return more;
         }
         return false;
     };
 
-    var killAnimation = function () {
-        if (currentAnimation) {
-            currentAnimation = null;
-        }
+    var killAnimations = function () {
+        $(currentAnimations).each(function () {
+            if (this.cancel) {
+                this.cancel();
+            }
+        });
+        currentAnimations = [];
     };
 
     var slides = function () {
@@ -141,8 +173,8 @@
         35: { name: "end", action: moveLast }
     };
 
-    var animations = {};
-    var currentAnimation = null;
+    var registeredAnimations = {};
+    var currentAnimations = [];
 
     return {
         start: start,
@@ -152,6 +184,6 @@
 
 } ();
 
-$(function() {
+$(function () {
     p5.start();
 });
