@@ -9,6 +9,11 @@
                  .bind("hashchange", hashChange);
     };
 
+    var stop = function() {
+        $(window).unbind("keydown", onKeyDown)
+                 .unbind("hashchange", hashChange);
+    };
+
     var registerAnimations = function (newAnimations) {
         $.extend(animations, newAnimations);
     };
@@ -90,23 +95,20 @@
         var animationName = target.data("animation");
         if (animationName) {
             currentAnimation = animations[animationName](target);
-            $.when(currentAnimation.promise).done(function () {
-                currentAnimation = null;
-            });
         }
     };
 
     var stepAnimation = function () {
-        if (currentAnimation) {
-            return currentAnimation.step();
+        if (currentAnimation && currentAnimation()) {
+            return true;
         }
+        return false;
     };
 
     var killAnimation = function () {
         if (currentAnimation) {
-            currentAnimation.cancel();
+            currentAnimation = null;
         }
-        return true;
     };
 
     var slides = function () {
@@ -144,6 +146,7 @@
 
     return {
         start: start,
+        stop: stop,
         registerAnimations: registerAnimations
     };
 
