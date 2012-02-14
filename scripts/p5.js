@@ -92,12 +92,17 @@
 
     var startAnimations = function (slide) {
         $("[data-animation]", slide).add(slide).each(function () {
-            var animation = extractAnimation($(this));
-            if (animation) {
-                animation.initialize($(this));
-                currentAnimations.push(animation);
-            }
+            addAnimationFor($(this));
         });
+    };
+
+    var addAnimationFor = function (element) {
+        var animation = extractAnimation(element);
+        if (animation) {
+            currentAnimations.push(animation);
+            $.when(animation.done)
+             .then(function () { currentAnimations.remove(animation); });
+        }
     };
 
     var extractAnimation = function (element) {
@@ -105,42 +110,25 @@
         if (name) {
             var factory = registeredAnimations[name];
             if (factory) {
-                return factory();
+                return factory(element);
             }
         }
         return null;
     };
 
     var stepAnimation = function () {
-        var stepped = false;
         if (currentAnimations.length > 0) {
-            stepped = runStep();
-        }
-        return stepped;
-    };
-
-    var runStep = function () {
-        var animation = currentAnimations[0];
-        if (animation) {
-            var more = animation.step();
-            if (!more) {
-                if (animation.cancel) {
-                    animation.cancel();
-                }
-                currentAnimations.pop();
+            var animation = currentAnimations[0];
+            if (animation) {
+                animation.step();
             }
-            return more;
+            return true;
         }
         return false;
     };
 
     var killAnimations = function () {
-        $(currentAnimations).each(function () {
-            if (this.cancel) {
-                this.cancel();
-            }
-        });
-        currentAnimations = [];
+        $(window).trigger("killAnimations");
     };
 
     var slides = function () {
@@ -183,6 +171,14 @@
     };
 
 } ();
+
+(function () {
+
+    Array.prototype.remove = function(object) {
+        this.splice(this.indexOf(object),1);
+    };
+
+})();
 
 $(function () {
     p5.start();

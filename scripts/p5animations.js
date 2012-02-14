@@ -1,48 +1,52 @@
-﻿var onebyone = function () {
+﻿var completionSignal = function () {
 
-    var target = null;
+    var deferred = $.Deferred();
 
-    var initialize = function (element) {
-        target = element;
-        target.children().addClass("onebyone");
+    var complete = function () {
+        $(window).unbind("killAnimations", complete);
+        deferred.resolve();
     };
+
+    $(window).bind("killAnimations", complete);
+
+    return {
+        complete: complete,
+        promise: deferred.promise()        
+    };
+};
+
+var onebyone = function (element) {
+
+    var target = element;
+    var signal = completionSignal();
 
     var step = function () {
         var hidden = target.children(".onebyone");
         hidden.first().removeClass("onebyone");
-        return hidden.length > 0;
+        if (hidden.length <= 1) {
+            signal.complete();
+        }
     };
 
-    var cancel = function() {
-
-    };
+    target.children().addClass("onebyone");
 
     return {
-        initialize: initialize,
         step: step,
-        cancel: cancel
+        done: signal.promise
     };
-    
 };
 
-var timedAppear = function () {
+var timedAppear = function (element) {
 
-    var target = null;
+    var target = element;
     var timeoutHandle = null;
-
-    var initialize = function (element) {
-        target = element;
-        target.hide();
-
-        var delay = target.data("animation-delay");
-        timeoutHandle = setTimeout(fadeIn, delay);
-    };
+    var signal = completionSignal();
 
     var step = function () {
-        return timeoutHandle != null;
+
     };
 
-    var cancel = function () {
+    var cleanup = function () {
         if (timeoutHandle) {
             clearTimeout(timeoutHandle);
         }
@@ -50,13 +54,17 @@ var timedAppear = function () {
 
     var fadeIn = function () {
         target.fadeIn();
-        timeoutHandle = null;
+        signal.complete();
     };
 
+    var delay = target.data("animation-delay");
+    target.hide();
+    timeoutHandle = setTimeout(fadeIn, delay);
+    signal.promise.always(cleanup);
+
     return {
-        initialize: initialize,
         step: step,
-        cancel: cancel
+        done: signal.promise
     };
 };
 

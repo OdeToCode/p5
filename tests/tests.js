@@ -69,11 +69,6 @@ var animTestEnvironment = {
 
 module("Animation", animTestEnvironment);
 
-test("Initializes animation", function () {
-    $(window).trigger(rightArrow());
-    ok(lastAnimation.getState().isInitialized);
-});
-
 test("Steps animation with right arrow", function () {
     $(window).trigger(rightArrow());
     $(window).trigger(rightArrow());
@@ -87,12 +82,12 @@ test("Cancels animation on left arrow", function () {
     ok(lastAnimation.getState().isCancelled);
 });
 
-test("Cancels when stepping stops", function () {
+test("Resolved when stepping stops", function () {
     $(window).trigger(rightArrow());
     $(window).trigger(rightArrow());
     $(window).trigger(rightArrow());
     $(window).trigger(rightArrow());
-    ok(lastAnimation.getState().isCancelled);
+    ok(lastAnimation.getState().isResolved);
 });
 
 test("Moves to next slide when animation complete", function () {
@@ -102,6 +97,18 @@ test("Moves to next slide when animation complete", function () {
     $(window).trigger(rightArrow());
     $(window).trigger(rightArrow());
     ok($("#slide3").hasClass("current"));
+});
+
+module("array remove test");
+
+test("Can remove object reference from Array", function () {
+    var o1 = {};
+    var o2 = {};
+    var o3 = {};
+    var array = [o1, o2, o3];
+
+    array.remove(o2);
+    ok(array.length == 2);
 });
 
 var rightArrow = function () {
@@ -142,34 +149,35 @@ var lastAnimation = null;
 
 var testAnimation = function () {
 
-    var isInitialized = false;
     var stepCount = 0;
     var isCancelled = false;
+    var deferred = $.Deferred();
+
+    var complete = function () {
+        $(window).unbind("killAnimations", complete);
+        isCancelled = true;
+        deferred.resolve();
+    };
+
+    $(window).bind("killAnimations", complete);
 
     lastAnimation = {
-
-        initialize: function () {
-            isInitialized = true;
-        },
-
+        done: deferred.promise(),
         step: function () {
             stepCount++;
-            return stepCount < 3;
-        },
-
-        cancel: function () {
-            isCancelled = true;
-        },
-
+            if (stepCount >= 3) {
+                deferred.resolve();
+            }
+        },                
         getState: function () {
-            return {
-                isInitialized: isInitialized,
+            return {                
                 stepCount: stepCount,
-                isCancelled: isCancelled
+                isCancelled: isCancelled,
+                isResolved: deferred.isResolved()
             };
         }
     };
-    
+
     return lastAnimation;
 };
 
