@@ -28,6 +28,14 @@ var onebyone = function (element) {
         }
     };
 
+
+    
+    
+
+    
+
+
+
     target.children().addClass("onebyone");
 
     return {
@@ -42,13 +50,10 @@ var timedAppear = function (element) {
     var timeoutHandle = null;
     var signal = completionSignal();
 
-    var step = function () {
-
-    };
-
     var cleanup = function () {
         if (timeoutHandle) {
             clearTimeout(timeoutHandle);
+            timeoutHandle = null;
         }
     };
 
@@ -63,7 +68,7 @@ var timedAppear = function (element) {
     signal.promise.always(cleanup);
 
     return {
-        step: step,
+        step: function () { },
         done: signal.promise
     };
 };

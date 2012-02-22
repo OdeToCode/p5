@@ -4,10 +4,13 @@
     <title>Sample Slideshow</title>
     <meta charset="utf-8" />
     <link href="themes/reset.css" rel="stylesheet" type="text/css" />
+    <link href="scripts/prettify/prettify.css" rel="stylesheet" type="text/css" />
     <link href="themes/otc.css" rel="stylesheet" />
     <link href="themes/p5animations.css" rel="stylesheet" type="text/css" />
+    
     <script src="jslibs/jquery-1.6.4.js" type="text/javascript"></script>
     <script src="jslibs/modernizr.js" type="text/javascript"></script>
+    <script src="scripts/prettify/prettify.js" type="text/javascript"></script>
     <script src="scripts/p5.js" type="text/javascript"></script>
     <script src="scripts/p5animations.js" type="text/javascript"></script>
 </head>
@@ -44,6 +47,24 @@
             <h1>This is another slide</h1>
             <img src="images/colorful.jpg" alt="Images are exciting" />
         </section>
+        
+                <section>
+            <h1>Code!</h1>
+            <ul>
+                <li>Every slide should have more code!</li>
+            </ul>
+            <pre>
+                <code>
+var start = function () {
+    assignSlideIdentifiers();
+    setFirstVisibleSlide();
+
+    $(window).bind("keydown", onKeyDown)
+             .bind("hashchange", hashChange);
+};
+                </code>
+            </pre>
+        </section>   
 
         <section class="center">
             <ul>
@@ -99,7 +120,7 @@
                     <td>Server on fire</td>
                 </tr>
             </table>
-        </section>               
+        </section>                 
 
         <footer>
             This is a footer

@@ -181,5 +181,7 @@
 })();
 
 $(function () {
+    $("code").addClass("prettyprint");
+    prettyPrint();
     p5.start();
 });

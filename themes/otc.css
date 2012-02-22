@@ -129,6 +129,17 @@ footer {
     bottom: 0px;
 }
 
+pre code {
+    background-color: #eeeecc;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px black;
+    margin: 10px;
+    font-family: consolas, monospace;
+    font-size: 0.8em;   
+    padding: 10px;
+}
+
 @media {
    
    @page {
