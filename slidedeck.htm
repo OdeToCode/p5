@@ -7,10 +7,13 @@
     <link href="scripts/prettify/prettify.css" rel="stylesheet" type="text/css" />
     <link href="themes/otc.css" rel="stylesheet" />
     <link href="themes/p5animations.css" rel="stylesheet" type="text/css" />
-    
+        
     <script src="jslibs/jquery-1.6.4.js" type="text/javascript"></script>
     <script src="jslibs/modernizr.js" type="text/javascript"></script>
     <script src="scripts/prettify/prettify.js" type="text/javascript"></script>
+    <script src="jslibs/underscore.js" type="text/javascript"></script>
+    <script src="jslibs/TransformJS.js" type="text/javascript"></script>
+
     <script src="scripts/p5.js" type="text/javascript"></script>
     <script src="scripts/p5animations.js" type="text/javascript"></script>
 </head>
@@ -92,11 +95,11 @@ var start = function () {
             <div>2 pictures will appear after a delay</div>
             <img src="images/colorful.jpg" alt="Images are exciting" 
                  width="50" height="37" 
-                 data-animation="timedAppear" data-animation-delay="1500"
+                 data-animation="timedAppear" data-animation-delay="500"
                 />
             <img src="images/colorful.jpg" alt="Images are exciting" 
                  width="50" height="37"
-                 data-animation="timedAppear" data-animation-delay="3000"
+                 data-animation="timedAppear" data-animation-delay="1000"
                 />
         </section>
 
@@ -121,6 +124,24 @@ var start = function () {
                 </tr>
             </table>
         </section>                 
+        
+        <section data-animation="zoompan">
+            <h1>Translations</h1>
+            <ul data-step="3" data-x="0" data-y="0" data-rotatez="45">
+                <li>Some</li>
+                <li>bullets</li>
+            </ul>
+            <div data-step="2" data-rotatez="-10" data-x="200" data-y="0" data-scale="0.4">
+                <img src="images/colorful.jpg" alt="Images are exciting" />
+            </div> 
+            <div data-step="1" data-x="15" data-y="255" data-rotatez="10">
+                Random words outside the list
+            </div>            
+        </section>
+        
+        <section>
+            <h1>The end</h1>
+        </section>
 
         <footer>
             This is a footer
