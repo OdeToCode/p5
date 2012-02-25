@@ -101,7 +101,7 @@
         if (animation) {
             currentAnimations.push(animation);
             $.when(animation.done)
-             .then(function () { currentAnimations.remove(animation); });
+             .then(function () { currentAnimations = _.without(currentAnimations, animation); });
         }
     };
 
@@ -172,13 +172,13 @@
 
 } ();
 
-(function () {
+//(function () {
 
-    Array.prototype.remove = function(object) {
-        this.splice(this.indexOf(object),1);
-    };
+//    Array.prototype.remove = function(object) {
+//        this.splice(this.indexOf(object),1);
+//    };
 
-})();
+//})();
 
 $(function () {
     $("code").addClass("prettyprint");
