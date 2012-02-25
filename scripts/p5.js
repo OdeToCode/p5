@@ -101,12 +101,14 @@
         if (animation) {
             currentAnimations.push(animation);
             $.when(animation.done)
-             .then(function () { currentAnimations = _.without(currentAnimations, animation); });
+             .then(function () {
+                 currentAnimations.remove(animation); 
+             });
         }
     };
 
     var extractAnimation = function (element) {
-        var name = element.data("animation");
+        var name = element.data().animation;
         if (name) {
             var factory = registeredAnimations[name];
             if (factory) {
@@ -172,13 +174,13 @@
 
 } ();
 
-//(function () {
+(function () {
 
-//    Array.prototype.remove = function(object) {
-//        this.splice(this.indexOf(object),1);
-//    };
+    Array.prototype.remove = function(object) {
+        this.splice(this.indexOf(object),1);
+    };
 
-//})();
+})();
 
 $(function () {
     $("code").addClass("prettyprint");
