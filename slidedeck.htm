@@ -116,32 +116,21 @@ var start = function () {
             </table>
         </section>                 
         
-        <section data-animation="zoompan">
-            <h1>Translations</h1>
-            <ul data-step="3" data-x="0" data-y="0">
-                <li>Some</li>
-                <li>bullets</li>
+        <section data-animation="zoomto" class="center">
+            <h1>Zooming to Elements</h1>            
+            <ul>
+                <li>Using zoomooz.js</li>
+                <li><a href="http://janne.aukia.com/zoomooz/">http://janne.aukia.com/zoomooz/</a></li>
             </ul>
-            <div data-step="2" data-x="300" data-y="0">
-                <img src="images/colorful.jpg" alt="Images are exciting" />
-            </div> 
-            <div data-step="1" data-x="15" data-y="255" >
-                Random words outside the list
-            </div>            
-        </section>
-        
-        <section data-animation="zoomto">
-            <h1>Zooming to Elements</h1>
-            <ul data-step="3">
-                <li>Some</li>
-                <li>bullets</li>
-            </ul>
-            <div data-step="2">
-                <img src="images/colorful.jpg" alt="Images are exciting" />
-            </div> 
             <div data-step="1">
-                Random words outside the list
+                <img src="images/colorful.jpg" alt="Images are exciting" />
+            </div> 
+            <div data-step="3" style="-webkit-transform: rotate(10deg); position:relative; top:-200px;">
+                <p>More Random words</p>
             </div>            
+            <div data-step="2" data-targetsize="0.3" style="-webkit-transform: rotate(90deg); position:relative; left:260px; top:-100px; font-size:10px;">    
+                <p>Vertical words</p>
+            </div>                                    
         </section>
 
         <section>
@@ -155,10 +144,11 @@ var start = function () {
     <script src="jslibs/jquery-1.6.4.js" type="text/javascript"></script>
     <script src="jslibs/modernizr.js" type="text/javascript"></script>
     <script src="scripts/prettify/prettify.js" type="text/javascript"></script>
-    <script src="jslibs/underscore.js" type="text/javascript"></script>
-    <script src="jslibs/transformjs.js" type="text/javascript"></script>    
-    <script src="jslibs/zoom.js" type="text/javascript"></script>
-
+    <script src="jslibs/underscore.js" type="text/javascript"></script>    
+    <script src="jslibs/sylvester.js" type="text/javascript"></script>
+    <script src="jslibs/purecssmatrix.js" type="text/javascript"></script>
+    <script src="jslibs/jquery.animtrans.js" type="text/javascript"></script>
+    <script src="jslibs/jquery.zoomooz.js" type="text/javascript"></script>
     <script src="scripts/p5.js" type="text/javascript"></script>
     <script src="scripts/p5animations.js" type="text/javascript"></script>
 

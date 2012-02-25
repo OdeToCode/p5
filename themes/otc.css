@@ -11,7 +11,7 @@
 	background-image: -moz-linear-gradient(bottom, rgb(153,153,153) 5%, rgb(170,170,153) 13%, rgb(204,204,177) 97%);
 	background-image: -webkit-linear-gradient(bottom, rgb(153,153,153) 5%, rgb(170,170,153) 13%, rgb(204,204,177) 97%);
 	background-image: -ms-linear-gradient(bottom, rgb(153,153,153) 5%, rgb(170,170,153) 13%, rgb(204,204,177) 97%);
-
+    overflow: hidden;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -76,8 +76,7 @@ section {
 section.current {
     z-index: 10;
     opacity: 1;
-    height: auto;
-    overflow:auto;
+    height: auto;    
 }
 
 section.center {    
@@ -85,7 +84,7 @@ section.center {
   display: -moz-box;
   display: -ms-box;
   -webkit-box-orient: vertical;
-  -webkit-box-pack: center;
+  -webkit-box-pack: top;
   -webkit-box-align: center;  
   -moz-box-orient: vertical;
   -moz-box-pack: center;
@@ -141,6 +140,7 @@ pre code {
     font-size: 0.8em;   
     padding: 10px;
 }
+
 
 @media {
    
