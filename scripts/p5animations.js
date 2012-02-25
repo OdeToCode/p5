@@ -21,8 +21,8 @@ var onebyone = function (element) {
     var signal = completionSignal();
 
     var step = function () {
-        var hidden = target.children(".onebyone");
-        hidden.first().removeClass("onebyone");
+        var hidden = target.children(".onebyone");        
+        hidden.first().removeClass("onebyone");        
         if (hidden.length <= 1) {
             signal.complete();
         }
@@ -65,27 +65,94 @@ var timedAppear = function (element) {
     };
 };
 
+var zoomer = (function () {
+    
+    var currentScale = 1;
+
+    return {
+        'in': function (options) {
+            if (currentScale !== 1) {
+                zoomer.out();
+                setTimeout(function () { zoomer["in"](options); }, 820);
+                return;
+            }
+            options.x = options.x || 0;
+            options.y = options.y || 0;
+
+            var padding = 20;
+
+            options.width = options.element.getBoundingClientRect().width + (padding * 2);
+            options.height = options.element.getBoundingClientRect().height + (padding * 2);
+            options.x = options.element.getBoundingClientRect().left - padding;
+            options.y = options.element.getBoundingClientRect().top - padding;
+
+
+            // If width/height values are set, calculate scale from those values
+            if (options.width !== undefined && options.height !== undefined) {
+                options.scale = Math.max(Math.min(window.innerWidth / options.width, window.innerHeight / options.height), 1);
+            }
+
+            if (options.scale > 1) {
+                options.x *= options.scale;
+                options.y *= options.scale;
+            }
+            var transform = {
+                translateX: -options.x,
+                translateY: -options.y,
+                scale: options.scale
+            };
+            $(document.body).animate(transform);
+
+            currentScale = options.scale;
+            setTimeout(options.complete, 200);
+        },
+
+        'out': function () {
+            $(document.body).animate({
+                scale: 1, translateX: 0, translateY: 0
+            });
+            currentScale = 1;
+        }
+    };
+
+})();
+
+
 var zoompan = function (element) {
     var target = element;
     var signal = completionSignal();
-    var ratio = Math.PI / 180;
+    var ratio = Math.PI / 180;    
 
-    var zoomables = target.children("[data-step]").toArray();
-    zoomables = _.sortBy(zoomables, function (child) {
-        return $(child).data().step;
-    });
+    var zoomables = _.sortBy(
+        target.children("[data-step]").toArray(),
+            function (child) {
+                return -($(child).data().step);
+            }
+    );
 
-    var cleanup = function () {
+    var zoomTo = function (zoomable) {
+        var clientTransform = getTransformData(zoomable);
 
+        zoomer["in"]({
+            target: target,
+            element: zoomable,
+            rotate: clientTransform.rotateZ,
+            complete: function () {
+                $(zoomable).animate({ rotateZ: 0 });
+            }
+        });
+    };
+
+    var reset = function () {
+        zoomer.out(target);
+        $("footer").fadeIn();
     };
 
     var getTransformData = function (zoomable) {
         var data = $(zoomable).data();
         var transform = {
             scale: parseFloat(data.scale) || 1,
-            rotateY: parseInt(data.rotatey) * ratio || 0,
-            rotateX: parseInt(data.rotatex) * ratio || 0,
-            rotateZ: parseInt(data.rotatez) * ratio || 0,
+            rotateZ: parseInt(data.rotate) * ratio || 0,
             translateX: parseInt(data.x) || 0,
             translateY: parseInt(data.y) || 0,
             translateZ: parseInt(data.z) || 0
@@ -102,26 +169,51 @@ var zoompan = function (element) {
     };
 
     var step = function () {
+        $("footer").fadeOut();
         var child = zoomables.pop();
-        var transform = getTransformData(child);
-
-        target.animate({
-            scale: 1 / transform.scale,
-            rotateX: transform.rotateX,
-            rotateY: transform.rotateY,
-            rotateZ: transform.rotateZ,
-            translateX: transform.translateX,
-            translateY: transform.translateY,
-            translateZ: transform.translateZ
-        });
-
-        if (zoomables.length < 1) {
+        if (child) {
+            zoomTo(child);
+        }
+        else {
             signal.complete();
         }
     };
 
     positionZoomables();
-    signal.promise.always(cleanup);
+    signal.promise.always(reset);
+
+    return {
+        step: step,
+        done: signal.promise
+    };
+};
+
+var zoomto = function (element) {
+    var target = element;
+    var signal = completionSignal();
+
+    var zoomables = _.sortBy(
+        target.children("[data-step]").toArray(),
+            function (child) {
+                return -($(child).data().step);
+            }
+    );
+
+    var step = function () {
+        var child = zoomables.pop();
+        if (child) {
+            zoom["in"]({ element: child });
+        }
+        else {
+            signal.complete();
+        }
+    };
+
+    signal.promise.always(
+        function () {
+            zoom["out"]();
+        }
+    );
 
     return {
         step: step,
@@ -132,5 +224,6 @@ var zoompan = function (element) {
 p5.registerAnimations({
     "onebyone": onebyone,
     "timedAppear": timedAppear,
-    "zoompan" : zoompan
+    "zoompan": zoompan,
+    "zoomto" : zoomto
 });

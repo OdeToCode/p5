@@ -1,5 +1,9 @@
 ﻿body 
 {
+    padding: 10px;
+	font-size: 28px;	
+	font-family: Helvetica, Arial, sans-serif;
+    line-height: normal;
 	background-color: #ccccaa;
 	background-repeat: no-repeat;
     background-attachment: fixed;
@@ -7,10 +11,7 @@
 	background-image: -moz-linear-gradient(bottom, rgb(153,153,153) 5%, rgb(170,170,153) 13%, rgb(204,204,177) 97%);
 	background-image: -webkit-linear-gradient(bottom, rgb(153,153,153) 5%, rgb(170,170,153) 13%, rgb(204,204,177) 97%);
 	background-image: -ms-linear-gradient(bottom, rgb(153,153,153) 5%, rgb(170,170,153) 13%, rgb(204,204,177) 97%);
-	padding: 10px;
-	font-size: 28px;	
-	font-family: Helvetica, Arial, sans-serif;
-    line-height: normal;
+
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -29,6 +30,7 @@ ul, ol {
 
 ul {
   list-style: disc;
+  list-style-position: inside;
 }
 
 li {
