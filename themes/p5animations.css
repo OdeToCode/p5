@@ -9,3 +9,28 @@
     -ms-transition: all 500ms linear 0s;
     transition: all 500ms linear 0s;     
 }
+
+.transitionAllQuick {
+    -webkit-transition: all 300ms linear 0s;  
+    -moz-transition: all 300ms linear 0s;	
+    -ms-transition: all 300ms linear 0s;
+    transition: all 300ms linear 0s;     
+}
+
+.red {
+    background-color: red;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.bigtext {
+    font-size: 2.0em;
+    font-weight: bold;
+}
+
+.smalltext {
+    font-size: 0.5em;
+    font-weight: normal;
+}
