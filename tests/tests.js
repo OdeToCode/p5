@@ -22,6 +22,11 @@ test("Moves to next slide on right arrow", function () {
     ok($("#slide2").hasClass("current"));
 });
 
+test("Moves to next slide on enter", function () {
+    $(window).trigger(enter()); ;
+    ok($("#slide2").hasClass("current"));
+});
+
 test("Doesn't move past last slide", function () {
     $(window).trigger(rightArrow());
     $(window).trigger(rightArrow());
@@ -120,6 +125,12 @@ var rightArrow = function () {
 var leftArrow = function() {
     var event = new $.Event("keydown");
     event.keyCode = 37;
+    return event;
+};
+
+var enter = function () {
+    var event = new $.Event("keydown");
+    event.keyCode = 13;
     return event;
 };
 
