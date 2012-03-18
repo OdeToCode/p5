@@ -152,6 +152,7 @@
     };
 
     var keys = {
+        13: { name: "enter", action: moveForward },
         39: { name: "rightArrow", action: moveForward },
         40: { name: "downArrow", action: moveForward },
         34: { name: "pageDown", action: moveForward },
