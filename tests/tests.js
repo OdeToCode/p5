@@ -18,44 +18,41 @@ test("Sets first slide as start slide", function () {
 });
 
 test("Moves to next slide on right arrow", function () {    
-    $(window).trigger(rightArrow());
+    fakeKeyboard.pressRightArrow();
     ok($("#slide2").hasClass("current"));
 });
 
 test("Moves to next slide on enter", function () {
-    $(window).trigger(enter()); ;
+    fakeKeyboard.pressEnter();
     ok($("#slide2").hasClass("current"));
 });
 
 test("Doesn't move past last slide", function () {
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
+    fakeKeyboard.pressRightArrow(4);
     ok($("#slide3").hasClass("current"));
 });
 
 test("Moves to previous slide on left arrow", function() {
-    $(window).trigger(rightArrow());
-    $(window).trigger(leftArrow());
+    fakeKeyboard.pressRightArrow()
+	        .pressLeftArrow();
     ok($("#slide1").hasClass("current"));
 });
 
 test("Moves to first slide on home", function() {
-    $(window).trigger(rightArrow());
-    $(window).trigger(home());
+    fakeKeyboard.pressRightArrow()
+	        .pressHome();
     ok($("#slide1").hasClass("current"));
 });
 
 test("Moves to last slide on end", function () {    
-    $(window).trigger(end());
+    fakeKeyboard.pressEnd();
     ok($("#slide3").hasClass("current"));
 });
 
 module("History", testEnvironment);
 
 test("Pushes state on move", function () {
-    $(window).trigger(rightArrow());
+    fakeKeyboard.pressRightArrow();
     strictEqual(lastState.url, "#1");
 });
 
@@ -75,32 +72,23 @@ var animTestEnvironment = {
 module("Animation", animTestEnvironment);
 
 test("Steps animation with right arrow", function () {
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
+    fakeKeyboard.pressRightArrow(2);
     ok(lastAnimation.getState().stepCount == 1);
 });
 
 test("Cancels animation on left arrow", function () {
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(leftArrow());
+    fakeKeyboard.pressRightArrow(2)
+		.pressLeftArrow();
     ok(lastAnimation.getState().isCancelled);
 });
 
 test("Resolved when stepping stops", function () {
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
+    fakeKeyboard.pressRightArrow(4);
     ok(lastAnimation.getState().isResolved);
 });
 
 test("Moves to next slide when animation complete", function () {
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
-    $(window).trigger(rightArrow());
+    fakeKeyboard.pressRightArrow(5);
     ok($("#slide3").hasClass("current"));
 });
 
@@ -115,36 +103,6 @@ test("Can remove object reference from Array", function () {
     array.remove(o2);
     ok(array.length == 2);
 });
-
-var rightArrow = function () {
-    var event = new $.Event("keydown");
-    event.keyCode = 39;
-    return event;
-};
-
-var leftArrow = function() {
-    var event = new $.Event("keydown");
-    event.keyCode = 37;
-    return event;
-};
-
-var enter = function () {
-    var event = new $.Event("keydown");
-    event.keyCode = 13;
-    return event;
-};
-
-var home = function() {
-    var event = new $.Event("keydown");
-    event.keyCode = 36;
-    return event;
-};
-
-var end = function() {
-    var event = new $.Event("keydown");
-    event.keyCode = 35;
-    return event;
-};
 
 var lastState = null;
 
